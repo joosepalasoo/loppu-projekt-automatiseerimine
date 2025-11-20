@@ -70,4 +70,4 @@ rm -rf /opt/flashcards
 3. Ansible paigaldab rakenduse serverisse, kasutades GitHub Actionsis valideeritud konteinerit.
 
 ## Autorid
-joosep alasoo IT-23
+joosep alasoo
