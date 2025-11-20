@@ -1,50 +1,73 @@
-# Multi-Project Flashcards System
+# Math Flashcards App
 
-Ühiskaust, mis sisaldab veebipõhise matemaatikakaartide rakenduse ning Ansible-põhise serverisse juurutamise lahenduse.
+Veebipõhise matemaatikakaartide rakendus mis töötab asible playbooki kasutades koos dockeriga.
 
 ## Kirjeldus
-- Webapp kuvab matemaatika flashcard'e ning töötab Docker/Nginx põhjal.
-- Ansible projekt võimaldab sama rakenduse automaatset paigaldamist teise Ubuntu VM-i.
+- Matemaatika flashcardid töötavad Docker/Nginx põhjal.
+- Ansible abil saame rakenduse automaatset paigaldada.
 - CI/CD pipeline valideerib Dockerfile’i, testib Ansible playbook'i ning võimaldab manuaalset deployment’i.
 
 ## Tööriistad
 
 ### 1. Git
-Miks: kasutusel versioonihalduseks.
+Kasutusel projekti koodi haldamiseks ja version controliks.
+### 1.1 Miks kasutasin
+Sest see on kohustuslik
 
 ### 2. GitHub Actions
-Miks: CI/CD pipeline automaatseks testimise jaoks.
+Kasutatakse projekti automaatseks ehitamiseks, kontrollimiseks ja testimiseks.
+### 2.1 Miks kasutasin
+Sest see on kohustuslik
 
 ### 3. Docker
-Miks: rakendus on staatiline ja töötab konteineris.
+Muudab selle ühtlaselt käivitatavaks erinevates keskkondades ja kasutab konteinereid appi jooksutamiseks.
+### 3.1 Miks kasutasin
+Integreerub CI/CD töövoogu, kus konteiner luuakse ja valideeritakse enne paigaldamist.
 
 ### 4. Ansible
-Miks: võimaldab rakendust serverisse automatiseeritult paigaldada.
+Võimaldab rakenduse automatiseeritud paigaldamist serverisse.
+### 4.1 Miks kasutasin
+Sest kasutab valmis Docker image’i ja seatistab rakenduse tööle.
 
 ## Käivitamine
+```sh
 git clone <repo-url>
 cd multi-project
 shell
-Kopeeri kood
-
-### Webapp container:
-cd webapp
-docker build -t flashcards .
-docker run -d -p 8080:80 flashcards
-shell
-Kopeeri kood
-
-### Deployment Ansible abil:
+```
+### Deployment Ansiblega:
+```sh
 cd ansible-deploy
 ansible-playbook -i hosts.ini playbook.yml
 markdown
-Kopeeri kood
+```
+
+## Rakenduse eemaldamine SERVERIST KUHU PIGALDASITE KOOS ANSIBLEGA
+
+### Docker
+
+```sh
+docker stop flashcards
+docker rm flashcards
+docker rmi flashcards
+docker system prune -a
+```
+
+### Serverist eemaldamine
+
+```sh
+ssh <server>
+docker stop flashcards || true
+docker rm flashcards || true
+docker rmi flashcards || true
+rm -rf /opt/flashcards
+```
 
 ## Kuidas Tööriistad Töötavad Koos
 
-1. Webapp hoitakse GitHubis.
-2. GitHub Actions kontrollib ja ehitab projekti.
-3. Ansible teeb serveri deployment'i.
+1. Koodi hallatakse Gitiga.
+2. GitHub Actions kontrollib ja ehitab projekti automaatselt.
+3. Ansible paigaldab rakenduse serverisse, kasutades GitHub Actionsis valideeritud konteinerit.
 
 ## Autorid
 joosep alasoo IT-23
