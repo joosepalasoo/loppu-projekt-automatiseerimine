@@ -35,7 +35,7 @@ jobs:
         run: ansible-lint playbook.yml
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: [ build-webapp, lint-ansible ]
     #if: github.event_name == 'workflow_dispatch'
     env:
